@@ -425,61 +425,64 @@ function App() {
       {/* Header */}
       <header className="bg-white shadow-md animate-slide-down">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-indigo-600">我的待办事项</h1>
-              <p className="text-gray-600 mt-1">高效管理您的任务</p>
+          {/* Main Header */}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div className="mb-4 md:mb-0">
+              <h1 className="text-2xl md:text-3xl font-bold text-indigo-600">我的待办事项</h1>
+              <p className="text-gray-600 mt-1 text-sm md:text-base">高效管理您的任务</p>
             </div>
             
-            {/* User Stats */}
-            <div className="flex items-center space-x-4">
-              <div className="bg-indigo-100 px-4 py-2 rounded-lg shadow-sm">
+            {/* User Stats - Responsive Layout */}
+            <div className="grid grid-cols-3 gap-2 md:flex md:items-center md:space-x-4">
+              <div className="bg-indigo-100 px-2 md:px-4 py-2 rounded-lg shadow-sm">
                 <div className="flex items-center">
-                  <span className="text-xl mr-2">⭐</span>
+                  <span className="text-lg md:text-xl mr-1 md:mr-2">⭐</span>
                   <div>
                     <p className="text-xs text-gray-500">积分</p>
-                    <p className="font-bold text-indigo-700">{points}</p>
+                    <p className="font-bold text-indigo-700 text-sm md:text-base">{points}</p>
                   </div>
                 </div>
               </div>
               
-              <div className="bg-purple-100 px-4 py-2 rounded-lg shadow-sm">
+              <div className="bg-purple-100 px-2 md:px-4 py-2 rounded-lg shadow-sm">
                 <div className="flex items-center">
-                  <span className="text-xl mr-2">🏆</span>
+                  <span className="text-lg md:text-xl mr-1 md:mr-2">🏆</span>
                   <div className="w-full">
                     <div className="flex justify-between items-center">
                       <p className="text-xs text-gray-500">等级</p>
-                      <p className="font-bold text-purple-700">{level}</p>
+                      <p className="font-bold text-purple-700 text-sm md:text-base">{level}</p>
                     </div>
                     {/* Level progress bar */}
-                    <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden mt-1">
+                    <div className="h-1 md:h-2 w-full bg-gray-200 rounded-full overflow-hidden mt-1">
                       <div 
                         className="h-full bg-purple-500 transition-all duration-500" 
                         style={{ width: `${(points % 100) / 100 * 100}%` }}
                       ></div>
                     </div>
-                    <p className="text-xs text-gray-500 mt-1">{points % 100}/100 距离等级 {level + 1}</p>
+                    <p className="text-xs text-gray-500 mt-1 hidden md:block">{points % 100}/100 距离等级 {level + 1}</p>
+                    <p className="text-xs text-gray-500 mt-1 md:hidden">{points % 100}/100</p>
                   </div>
                 </div>
               </div>
               
-              <div className="bg-red-100 px-4 py-2 rounded-lg shadow-sm">
+              <div className="bg-red-100 px-2 md:px-4 py-2 rounded-lg shadow-sm">
                 <div className="flex items-center">
-                  <span className="text-xl mr-2">🔥</span>
+                  <span className="text-lg md:text-xl mr-1 md:mr-2">🔥</span>
                   <div>
-                    <p className="text-xs text-gray-500">连续完成</p>
-                    <p className="font-bold text-red-700">{streak}</p>
+                    <p className="text-xs text-gray-500">连续</p>
+                    <p className="font-bold text-red-700 text-sm md:text-base">{streak}</p>
                   </div>
                 </div>
               </div>
             </div>
-            
-            <div className="hidden md:block">
-              <div className="relative w-64 h-64 opacity-75">
-                <div className="absolute top-0 left-0 w-full h-full bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
-                <div className="absolute top-0 right-0 w-full h-full bg-blue-500 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
-                <div className="absolute bottom-0 left-20 w-full h-full bg-purple-500 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
-              </div>
+          </div>
+          
+          {/* Decorative Blobs - Only visible on larger screens */}
+          <div className="hidden md:block mt-4 md:mt-0">
+            <div className="relative w-64 h-64 opacity-75 mx-auto">
+              <div className="absolute top-0 left-0 w-full h-full bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
+              <div className="absolute top-0 right-0 w-full h-full bg-blue-500 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-2000"></div>
+              <div className="absolute bottom-0 left-20 w-full h-full bg-purple-500 rounded-full mix-blend-multiply filter blur-xl animate-blob animation-delay-4000"></div>
             </div>
           </div>
         </div>
@@ -503,19 +506,19 @@ function App() {
               <p className="card-description">今天您需要完成什么？</p>
             </div>
             <div className="card-content">
-              <form onSubmit={addTodo} className="flex flex-col sm:flex-row gap-4">
+              <form onSubmit={addTodo} className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                 <input
                   ref={inputRef}
                   type="text"
                   value={newTodo}
                   onChange={(e) => setNewTodo(e.target.value)}
                   placeholder="需要完成什么？"
-                  className="input flex-1"
+                  className="input flex-1 text-sm md:text-base"
                   disabled={loading}
                 />
                 <button
                   type="submit"
-                  className={`btn btn-primary btn-md ${isAddingTodo ? 'animate-pulse' : ''}`}
+                  className={`btn btn-primary btn-md text-sm md:text-base ${isAddingTodo ? 'animate-pulse' : ''}`}
                   disabled={loading || !newTodo.trim()}
                 >
                   {isAddingTodo ? '添加中...' : '添加任务'}
@@ -531,27 +534,27 @@ function App() {
               <p className="card-description">完成任务解锁成就并获得奖励</p>
             </div>
             <div className="card-content">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                 {achievements.map((achievement) => (
                   <div 
                     key={achievement.id} 
-                    className={`p-4 rounded-lg border ${achievement.unlocked ? 'bg-yellow-50 border-yellow-200' : 'bg-gray-50 border-gray-200'} transition-all duration-300 hover:shadow-md`}
+                    className={`p-3 md:p-4 rounded-lg border ${achievement.unlocked ? 'bg-yellow-50 border-yellow-200' : 'bg-gray-50 border-gray-200'} transition-all duration-300 hover:shadow-md`}
                   >
                     <div className="flex items-center">
-                      <div className={`text-3xl mr-3 ${!achievement.unlocked && 'opacity-50'}`}>{achievement.icon}</div>
+                      <div className={`text-2xl md:text-3xl mr-2 md:mr-3 ${!achievement.unlocked && 'opacity-50'}`}>{achievement.icon}</div>
                       <div className="flex-1">
-                        <h3 className="font-semibold text-lg flex items-center">
-                          {achievement.title}
+                        <h3 className="font-semibold text-base md:text-lg flex flex-wrap items-center">
+                          <span className="mr-1">{achievement.title}</span>
                           {achievement.unlocked && (
-                            <span className="ml-2 text-xs bg-green-500 text-white px-2 py-0.5 rounded-full">已解锁</span>
+                            <span className="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full">已解锁</span>
                           )}
                         </h3>
-                        <p className="text-sm text-gray-600">{achievement.description}</p>
+                        <p className="text-xs md:text-sm text-gray-600">{achievement.description}</p>
                         
                         {/* Progress bar for achievements with progress */}
                         {achievement.target && (
                           <div className="mt-2">
-                            <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+                            <div className="h-1.5 md:h-2 w-full bg-gray-200 rounded-full overflow-hidden">
                               <div 
                                 className="h-full bg-indigo-500 transition-all duration-500" 
                                 style={{ width: `${((achievement.progress || 0) / achievement.target) * 100}%` }}
@@ -573,24 +576,24 @@ function App() {
           {/* Todo List */}
           <div className="card animate-slide-up" style={{ animationDelay: '0.2s' }}>
             <div className="card-header">
-              <div className="flex items-center justify-between">
-                <h2 className="card-title">您的任务</h2>
-                <div className="flex space-x-2">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
+                <h2 className="card-title text-lg md:text-xl">您的任务</h2>
+                <div className="flex space-x-1 md:space-x-2">
                   <button 
                     onClick={() => setFilterStatus('all')}
-                    className={`btn btn-sm ${filterStatus === 'all' ? 'btn-primary' : 'btn-secondary'}`}
+                    className={`btn btn-xs md:btn-sm ${filterStatus === 'all' ? 'btn-primary' : 'btn-secondary'}`}
                   >
                     全部
                   </button>
                   <button 
                     onClick={() => setFilterStatus('active')}
-                    className={`btn btn-sm ${filterStatus === 'active' ? 'btn-primary' : 'btn-secondary'}`}
+                    className={`btn btn-xs md:btn-sm ${filterStatus === 'active' ? 'btn-primary' : 'btn-secondary'}`}
                   >
                     未完成
                   </button>
                   <button 
                     onClick={() => setFilterStatus('completed')}
-                    className={`btn btn-sm ${filterStatus === 'completed' ? 'btn-primary' : 'btn-secondary'}`}
+                    className={`btn btn-xs md:btn-sm ${filterStatus === 'completed' ? 'btn-primary' : 'btn-secondary'}`}
                   >
                     已完成
                   </button>
@@ -604,16 +607,16 @@ function App() {
             </div>
             <div className="card-content">
               {loading && todos.length === 0 ? (
-                <div className="text-center py-8">
-                  <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500 mb-4"></div>
-                  <p className="text-gray-500">正在加载您的任务...</p>
+                <div className="text-center py-6 md:py-8">
+                  <div className="inline-block animate-spin rounded-full h-6 w-6 md:h-8 md:w-8 border-t-2 border-b-2 border-indigo-500 mb-3 md:mb-4"></div>
+                  <p className="text-sm md:text-base text-gray-500">正在加载您的任务...</p>
                 </div>
               ) : filteredTodos.length === 0 ? (
-                <div className="text-center py-8 border-2 border-dashed border-gray-200 rounded-lg">
-                  <svg className="mx-auto h-12 w-12 text-gray-400 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="text-center py-6 md:py-8 border-2 border-dashed border-gray-200 rounded-lg">
+                  <svg className="mx-auto h-10 w-10 md:h-12 md:w-12 text-gray-400 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
-                  <p className="mt-2 text-gray-500">
+                  <p className="mt-2 text-sm md:text-base text-gray-500">
                     {filterStatus === 'all' ? '暂无任务。请在上方添加！' : 
                      filterStatus === 'active' ? '没有未完成的任务。很棒！' : 
                      '暂无已完成的任务。'}
@@ -624,22 +627,22 @@ function App() {
                   {filteredTodos.map((todo, index) => (
                     <li 
                       key={todo.id} 
-                      className="py-4 px-2 hover:bg-gray-50 rounded-md transition-all duration-300 stagger-item"
+                      className="py-3 md:py-4 px-2 hover:bg-gray-50 rounded-md transition-all duration-300 stagger-item"
                       style={{ animationDelay: `${index * 0.1}s` }}
                     >
                       <div className="flex items-center justify-between group">
-                        <div className="flex items-center">
-                          <div className="relative">
+                        <div className="flex items-center flex-1 min-w-0">
+                          <div className="relative flex-shrink-0">
                             <input
                               type="checkbox"
                               checked={todo.isCompleted}
                               onChange={() => toggleTodo(todo.id)}
-                              className="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded transition-all duration-300"
+                              className="h-4 w-4 md:h-5 md:w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded transition-all duration-300"
                               disabled={loading}
                             />
                             {todo.isCompleted && (
                               <svg 
-                                className="absolute top-0 left-0 h-5 w-5 text-indigo-600 animate-scale-in" 
+                                className="absolute top-0 left-0 h-4 w-4 md:h-5 md:w-5 text-indigo-600 animate-scale-in" 
                                 fill="none" 
                                 viewBox="0 0 24 24" 
                                 stroke="currentColor"
@@ -649,17 +652,18 @@ function App() {
                             )}
                           </div>
                           <span 
-                            className={`ml-3 text-lg transition-all duration-300 ${todo.isCompleted ? 'line-through text-gray-400' : 'text-gray-800'}`}
+                            className={`ml-2 md:ml-3 text-sm md:text-base transition-all duration-300 truncate ${todo.isCompleted ? 'line-through text-gray-400' : 'text-gray-800'}`}
                           >
                             {todo.value}
                           </span>
                         </div>
                         <button
                           onClick={() => deleteTodo(todo.id)}
-                          className="ml-2 btn btn-sm btn-danger opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          className="ml-2 btn btn-xs md:btn-sm btn-danger md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0"
                           disabled={loading}
+                          aria-label="删除任务"
                         >
-                          Delete
+                          删除
                         </button>
                       </div>
                     </li>
@@ -679,10 +683,10 @@ function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-6 mt-auto animate-slide-up">
+      <footer className="bg-gray-800 text-white py-4 md:py-6 mt-auto animate-slide-up">
         <div className="container mx-auto px-4 text-center">
-          <p>Todo List Application &copy; {new Date().getFullYear()}</p>
-          <p className="text-gray-400 text-sm mt-1">Built with React, TypeScript, and Tailwind CSS</p>
+          <p className="text-sm md:text-base">待办事项应用 &copy; {new Date().getFullYear()}</p>
+          <p className="text-gray-400 text-xs md:text-sm mt-1">使用 React, TypeScript 和 Tailwind CSS 构建</p>
         </div>
       </footer>
     </div>
